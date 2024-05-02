@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Title.unity
+    path: Assets/Scenes/Title.unity
     guid: c733743eeccf31d4cbe138c97a684e8f
   - enabled: 1
     path: Assets/Scenes/CoinPusher.unity
