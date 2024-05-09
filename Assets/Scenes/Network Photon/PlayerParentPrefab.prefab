@@ -138,8 +138,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 0
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -194,3 +194,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae5c6b62c0ec0049abba3e96114b9b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabBall: {fileID: -4945135575909924142, guid: b593b050e6f5e6b4bbc1d248798f2cf8, type: 3}

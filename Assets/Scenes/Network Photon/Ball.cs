@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Fusion;
 
-public class Ball : MonoBehaviour
+public class Ball : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Networked] private TickTimer life { get; set; }
+    public void Init()
     {
-        
+        //photon経由で時間を図りたいためTickTimerで作っている。
+        life = TickTimer.CreateFromSeconds(Runner, 5.0f);
     }
-
-    // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {
-        
+        if (life.Expired(Runner)) //ライフが減ると(5秒間経ってしまうと)　デスポーンさせる。
+            Runner.Despawn(Object);
+        else
+            transform.position += 5 * transform.forward * Runner.DeltaTime;
+        //Time.deltaTimeだとクライアントの時間になってしまうが、Runnner.DeltaTimeを使用することでサーバー(photon)上のdeltaTimeで同期
     }
 }

@@ -11,8 +11,15 @@ using UnityEngine.SceneManagement;
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] private NetworkPrefabRef _playerPrefab;
+    //どのプレイヤーが何をしたのかわかる為のキャッシュとしてDictionaryをローカルで保存している、名前を与えることで値が返ってくるから。何をしたのか？が分かり安い
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
-    //どのプレイヤーが何をしたのかわかる為のキャッシュとしてDictionaryをローカルで保存している、名前を与えることで値が返ってくるから。
+
+    private bool _mouseButton0;
+    private void Update()
+    {
+        _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0); //もし押されたら
+    }
+
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
@@ -50,6 +57,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (Input.GetKey(KeyCode.D))
             data.direction += Vector3.right;
 
+        if (_mouseButton0)
+            data.buttons |= NetworkInputData.MOUSEBUTTON1;
+
+        _mouseButton0 = false;
         input.Set(data);
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
@@ -82,13 +93,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         // Start or join (depends on gamemode) a session with a specific name
-        await _runner.StartGame(new StartGameArgs()
+        await _runner.StartGame(new StartGameArgs() //networkからのデータが返ってくるまで待たなくてはいけない。
         {
             GameMode = mode,
             SessionName = "TestRoom",
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+
+        //newで作成しているので、データを同時に差し込んでいる(コンストラクター)
     }
     private void OnGUI()
     {
