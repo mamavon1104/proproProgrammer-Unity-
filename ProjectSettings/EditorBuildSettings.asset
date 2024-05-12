@@ -5,11 +5,14 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/Title.unity
+  - enabled: 0
+    path: Assets/Scenes/UnityGames/CoinPusher/Scene/Title.unity
     guid: c733743eeccf31d4cbe138c97a684e8f
-  - enabled: 1
-    path: Assets/Scenes/CoinPusher.unity
+  - enabled: 0
+    path: Assets/Scenes/UnityGames/CoinPusher/Scene/CoinPusher.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Network Photon/Photon.unity
+    guid: d96eb8167ae62544f8342653c9c9e6d3
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
