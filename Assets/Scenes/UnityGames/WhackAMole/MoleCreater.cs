@@ -33,7 +33,7 @@ public class MoleCreater : MonoBehaviour
             await UniTask.WaitForSeconds(moleSpawnAndMoveTime);
             var tile = m_tiles[Random.Range(0, m_tiles.Length)];
             Vector3 moleSpawnPosition = new Vector3(tile.position.x, moleYPos, tile.position.z);
-            var mole = Instantiate(m_molePrefab, moleSpawnPosition, Quaternion.identity);
+            Instantiate(m_molePrefab, moleSpawnPosition, Quaternion.identity);
         }
     }
 
