@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
-public class WhackAMoleManager : MonoBehaviour
+public class MoleCreater : MonoBehaviour
 {
     [SerializeField] GameObject m_molePrefab;
     [SerializeField] Transform[] m_tiles;
@@ -14,7 +14,7 @@ public class WhackAMoleManager : MonoBehaviour
 
     private async void Start()
     {
-        WhackAMoleTextManager.time.Subscribe(x =>
+        WhackAMoleValueManager.time.Subscribe(x =>
         {
             moleSpawnAndMoveTime = x switch //UniRXのTimeを取得して、3秒以下だったら～等を羅列し、スポーン時間を設定した、
             {

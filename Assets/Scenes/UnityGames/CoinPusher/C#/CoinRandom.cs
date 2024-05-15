@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class CoinRandom : MonoBehaviour
 {
+    [SerializeField] int CreateCoinNum = 200;
     [SerializeField] GameObject CoinPrefab;
     private async void Awake()
     {
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < CreateCoinNum; i++)
         {
             await UniTask.Yield();
             var coin = Instantiate(CoinPrefab);

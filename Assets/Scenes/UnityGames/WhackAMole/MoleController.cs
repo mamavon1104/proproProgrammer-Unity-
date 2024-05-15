@@ -17,12 +17,12 @@ public class MoleController : MonoBehaviour
             ThrottleFirst(TimeSpan.FromMilliseconds(2000)) //2•b–³Ž‹
             .Subscribe(_ =>
             {
-                if (WhackAMoleTextManager.time.Value <= 0)
+                if (WhackAMoleValueManager.time.Value <= 0)
                     return;
 
                 Instantiate(hitEffectPrefab, myT.position, Quaternion.identity);
                 myIsAnimating = false;
-                ++WhackAMoleTextManager.score.Value;
+                ++WhackAMoleValueManager.score.Value;
                 Debug.Log("aaaa");
             });
     }
@@ -32,7 +32,7 @@ public class MoleController : MonoBehaviour
         await UniTask.WaitUntil(() => myT != null);
 
         var moleMoveSequence = DOTween.Sequence()
-        .Append(myT.DOMoveY(0, WhackAMoleManager.moleSpawnAndMoveTime).SetEase(Ease.OutSine))
+        .Append(myT.DOMoveY(0, MoleCreater.moleSpawnAndMoveTime).SetEase(Ease.OutSine))
         .AppendInterval(0.3f)
         .SetLoops(2, LoopType.Yoyo)
         .OnComplete(() => gameObject.SetActive(false)); //’@‚©‚ê‚È‚¯‚ê‚Î‚±‚±‚Å’âŽ~‚È‚Í‚¸
@@ -41,7 +41,7 @@ public class MoleController : MonoBehaviour
         moleMoveSequence.Pause();
 
         var moleReturnSequence = DOTween.Sequence()
-        .Append(myT.DOMoveY(WhackAMoleManager.moleYPos, 1f).SetEase(Ease.OutSine))
+        .Append(myT.DOMoveY(MoleCreater.moleYPos, 1f).SetEase(Ease.OutSine))
         .OnComplete(() => gameObject.SetActive(false));
     }
 }
