@@ -7,9 +7,13 @@ using UnityEngine;
 
 public class MoleController : MonoBehaviour
 {
+    [SerializeField] float moleExposeTime = 0.3f;
     [SerializeField] GameObject hitEffectPrefab;
+
     Transform myT;
     bool myIsAnimating = true;
+    GameObject myEffect = null;
+
     private void Start()
     {
         myT = transform;
@@ -20,7 +24,7 @@ public class MoleController : MonoBehaviour
                 if (WhackAMoleValueManager.time.Value <= 0)
                     return;
 
-                Instantiate(hitEffectPrefab, myT.position, Quaternion.identity);
+                myEffect = Instantiate(hitEffectPrefab, myT.position, Quaternion.identity);
                 myIsAnimating = false;
                 ++WhackAMoleValueManager.score.Value;
                 Debug.Log("aaaa");
@@ -33,15 +37,21 @@ public class MoleController : MonoBehaviour
 
         var moleMoveSequence = DOTween.Sequence()
         .Append(myT.DOMoveY(0, MoleCreater.moleSpawnAndMoveTime).SetEase(Ease.OutSine))
-        .AppendInterval(0.3f)
+        .AppendInterval(moleExposeTime)
         .SetLoops(2, LoopType.Yoyo)
-        .OnComplete(() => gameObject.SetActive(false)); //’@‚©‚ê‚È‚¯‚ê‚Î‚±‚±‚Å’â~‚È‚Í‚¸
+        .OnComplete(() => Destroy(gameObject)); //’@‚©‚ê‚È‚¯‚ê‚Î‚±‚±‚Å’â~‚È‚Í‚¸
 
         await UniTask.WaitUntil(() => !myIsAnimating); //’@‚©‚ê‚Äbool‚ª•Ï‚í‚Á‚½‚ç‰º‚Ö
         moleMoveSequence.Pause();
 
         var moleReturnSequence = DOTween.Sequence()
         .Append(myT.DOMoveY(MoleCreater.moleYPos, 1f).SetEase(Ease.OutSine))
-        .OnComplete(() => gameObject.SetActive(false));
+        .OnComplete(() =>
+        {
+            Destroy(gameObject);
+
+            //effect‚Ìƒ‹[ƒv‚ğ‰ğ‚¢‚Ä‚à‚¸‚Á‚Æ”½‰f‚³‚ê‘±‚¯‚é‚©‚ç‚í‚´‚í‚´•Ï”‚ÉŠi”[‚µ‚ÄÁ‚·‚µ‚©‚È‚©‚Á‚½B
+            Destroy(myEffect);
+        });
     }
 }
