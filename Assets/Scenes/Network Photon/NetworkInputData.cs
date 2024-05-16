@@ -8,7 +8,9 @@ using UnityEngine;
 /// </summary>
 public struct NetworkInputData : INetworkInput
 {
+    //毎フレーム渡すから、intやboolよりもbit数がかなり少ないbyteを使用。
     public const byte MOUSEBUTTON1 = 0x01;
-    public byte buttons;
+    public const byte MOUSEBUTTON2 = 0x02;
+    public NetworkButtons buttons;
     public Vector3 direction;　//どっちのベクトルが取れているのかを考える。
 }

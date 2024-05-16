@@ -161,7 +161,7 @@ MonoBehaviour:
   jumpImpulse: 8
   acceleration: 10
   braking: 10
-  maxSpeed: 2
+  maxSpeed: 6
   rotationSpeed: 15
 --- !u!114 &5225455995819005287
 MonoBehaviour:
@@ -195,3 +195,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabBall: {fileID: -4945135575909924142, guid: b593b050e6f5e6b4bbc1d248798f2cf8, type: 3}
+  _prefabPhysxBall: {fileID: 3114621398982020226, guid: 90a2f2787212207408889e31ae3a08b2, type: 3}

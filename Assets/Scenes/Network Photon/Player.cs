@@ -5,6 +5,7 @@ public class Player : NetworkBehaviour@//ƒ‚ƒmƒrƒwƒCƒrƒA[‚Å‚Í‚È‚¢B Photon‚Å‚Í‚
 {
     [Networked] private TickTimer delay { get; set; }
     [SerializeField] private Ball _prefabBall;
+    [SerializeField] private PhysicsBall _prefabPhysxBall;
     private NetworkCharacterController _networkCharaController;
     private Vector3 _forward, right, left, back;
 
@@ -12,9 +13,7 @@ public class Player : NetworkBehaviour@//ƒ‚ƒmƒrƒwƒCƒrƒA[‚Å‚Í‚È‚¢B Photon‚Å‚Í‚
     {
         _networkCharaController = GetComponent<NetworkCharacterController>();
         _forward = transform.forward;
-        right = transform.right;
         back = -transform.forward;
-        left = -transform.right;
     }
 
     public override void FixedUpdateNetwork()
@@ -28,35 +27,20 @@ public class Player : NetworkBehaviour@//ƒ‚ƒmƒrƒwƒCƒrƒA[‚Å‚Í‚È‚¢B Photon‚Å‚Í‚
             _networkCharaController.Move(5 * data.direction * Runner.DeltaTime); //runnner‚ÌDeltaTime‚Æ‚©
 
             if (data.direction.sqrMagnitude > 0) //direc‚Ì•½•ûª‚ª0ˆÈã‚¾‚Á‚½‚ç ³‹K‰»ƒxƒNƒgƒ‹‚ ‚°‚éB
+            {
                 _forward = data.direction;
+                back = -data.direction;
+            }
 
             if (!delay.ExpiredOrNotRunning(Runner))
                 return;
 
-            if ((data.buttons & NetworkInputData.MOUSEBUTTON1) != 0)//‚à‚µƒ}ƒEƒX‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚È‚ç
+            if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))//‚à‚µƒ}ƒEƒX‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚È‚ç
             {
-                delay = TickTimer.CreateFromSeconds(Runner, 0.5f); //0.5•bŠÔcreate‚ğ˜A‘Å‚ğ–³‹‚·‚éA
+                delay = TickTimer.CreateFromSeconds(Runner, 0.1f); //0.5•bŠÔcreate‚ğ˜A‘Å‚ğ–³‹‚·‚éA
                 Runner.Spawn(
                     _prefabBall,                                                      //prefabƒ{[ƒ‹‚ğì¬
                     transform.position + _forward, Quaternion.LookRotation(_forward), //‘O•û‚ğŒü‚¢‚Ä‚¢‚ÄA©•ª‚Ì‘O•û‚É
-                    Object.InputAuthority, (runner, o) =>                             //ƒlƒbƒgƒ[ƒNƒIƒuƒWƒFƒNƒg‚ÌInit‚ğŒÄ‚Ño‚µ(‰Šú‰»)
-                    {
-                        // Initialize the Ball before synchronizing it
-                        o.GetComponent<Ball>().Init();
-                    }
-                );
-                Runner.Spawn(
-                    _prefabBall,                                                      //prefabƒ{[ƒ‹‚ğì¬
-                    transform.position + right, Quaternion.LookRotation(right), //‘O•û‚ğŒü‚¢‚Ä‚¢‚ÄA©•ª‚Ì‘O•û‚É
-                    Object.InputAuthority, (runner, o) =>                             //ƒlƒbƒgƒ[ƒNƒIƒuƒWƒFƒNƒg‚ÌInit‚ğŒÄ‚Ño‚µ(‰Šú‰»)
-                    {
-                        // Initialize the Ball before synchronizing it
-                        o.GetComponent<Ball>().Init();
-                    }
-                );
-                Runner.Spawn(
-                    _prefabBall,                                                      //prefabƒ{[ƒ‹‚ğì¬
-                    transform.position + left, Quaternion.LookRotation(left), //‘O•û‚ğŒü‚¢‚Ä‚¢‚ÄA©•ª‚Ì‘O•û‚É
                     Object.InputAuthority, (runner, o) =>                             //ƒlƒbƒgƒ[ƒNƒIƒuƒWƒFƒNƒg‚ÌInit‚ğŒÄ‚Ño‚µ(‰Šú‰»)
                     {
                         // Initialize the Ball before synchronizing it
@@ -70,6 +54,19 @@ public class Player : NetworkBehaviour@//ƒ‚ƒmƒrƒwƒCƒrƒA[‚Å‚Í‚È‚¢B Photon‚Å‚Í‚
                     {
                         // Initialize the Ball before synchronizing it
                         o.GetComponent<Ball>().Init();
+                    }
+                );
+            }
+            else if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON2))
+            {
+                delay = TickTimer.CreateFromSeconds(Runner, 0.1f);
+                Runner.Spawn(
+                    _prefabPhysxBall,
+                    transform.position + _forward,
+                    Quaternion.LookRotation(_forward),
+                    Object.InputAuthority, (runner, o) =>
+                    {
+                        o.GetComponent<PhysicsBall>().Init(25 * _forward);
                     }
                 );
             }

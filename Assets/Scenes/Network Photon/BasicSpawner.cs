@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Fusion.Addons.Physics;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     //どのプレイヤーが何をしたのかわかる為のキャッシュとしてDictionaryをローカルで保存している、名前を与えることで値が返ってくるから。何をしたのか？が分かり安い
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
-    private bool _mouseButton0;
+    private bool _mouseButton1;
+    private bool _mouseButton2;
     private void Update()
     {
-        _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0); //もし押されたら
+        _mouseButton1 = _mouseButton1 | Input.GetMouseButton(0); //もし押されたら
+        _mouseButton2 = _mouseButton2 | Input.GetMouseButton(1); //もし押されたら
     }
 
 
@@ -57,10 +60,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (Input.GetKey(KeyCode.D))
             data.direction += Vector3.right;
 
-        if (_mouseButton0)
-            data.buttons |= NetworkInputData.MOUSEBUTTON1;
+        data.buttons.Set(NetworkInputData.MOUSEBUTTON1, _mouseButton1);
+        _mouseButton1 = false;
+        data.buttons.Set(NetworkInputData.MOUSEBUTTON2, _mouseButton2);
+        _mouseButton2 = false;
 
-        _mouseButton0 = false;
+        _mouseButton1 = false;
         input.Set(data);
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
@@ -82,6 +87,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private NetworkRunner _runner;
     async void StartGame(GameMode mode)
     {
+        gameObject.AddComponent<RunnerSimulatePhysics3D>();
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;                        //ProvideInputをtureに
 
