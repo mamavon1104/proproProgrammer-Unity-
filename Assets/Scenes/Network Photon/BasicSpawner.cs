@@ -23,7 +23,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         _mouseButton2 = _mouseButton2 | Input.GetMouseButton(1); //‚à‚µ‰Ÿ‚³‚ê‚½‚ç
     }
 
-
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (runner.IsServer)
@@ -87,7 +86,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private NetworkRunner _runner;
     async void StartGame(GameMode mode)
     {
-        gameObject.AddComponent<RunnerSimulatePhysics3D>();
+        var runnerSimulatedPhysics3d = gameObject.AddComponent<RunnerSimulatePhysics3D>();
+        runnerSimulatedPhysics3d.ClientPhysicsSimulation = ClientPhysicsSimulation.SimulateForward;
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;                        //ProvideInput‚ðture‚É
 

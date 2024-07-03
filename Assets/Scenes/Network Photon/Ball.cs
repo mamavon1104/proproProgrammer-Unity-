@@ -1,19 +1,87 @@
 using Fusion;
+using UnityEngine;
 
 public class Ball : NetworkBehaviour
 {
-    [Networked] private TickTimer life { get; set; }
-    public void Init()
+    // PRIVATE METHODS
+
+    [SerializeField]
+    private float _speed = 80f;
+    [SerializeField]
+    private float _maxDistance = 100f;
+    [SerializeField]
+    private GameObject _hitEffect;
+    [SerializeField]
+    private float _lifeTimeAfterHit = 2f;
+    [SerializeField]
+    private GameObject _visualRoot;
+
+    private Vector3 _startPosition;
+    private Vector3 _targetPosition;
+    private bool _showHitEffect;
+
+    private float _startTime;
+    private float _duration;
+
+    // PUBLIC METHODS
+
+    public void SetHitPosition(Vector3 hitPosition)
     {
-        //photon経由で時間を図りたいためTickTimerで作っている。
-        life = TickTimer.CreateFromSeconds(Runner, 5.0f);
+        _targetPosition = hitPosition;
+        _showHitEffect = hitPosition != Vector3.zero;
     }
-    public override void FixedUpdateNetwork()
+
+    // MONOBEHAVIOUR
+
+    protected void Awake()
     {
-        if (life.Expired(Runner)) //ライフが減ると(5秒間経ってしまうと)　デスポーンさせる。
-            Runner.Despawn(Object);
+        if (_hitEffect != null)
+        {
+            _hitEffect.SetActive(false);
+        }
+    }
+
+    protected void Start()
+    {
+        _startPosition = transform.position;
+
+        if (_targetPosition == Vector3.zero)
+        {
+            _targetPosition = _startPosition + transform.forward * _maxDistance;
+        }
+
+        _duration = Vector3.Distance(_startPosition, _targetPosition) / _speed;
+        _startTime = Time.timeSinceLevelLoad;
+    }
+
+    protected void Update()
+    {
+        float time = Time.timeSinceLevelLoad - _startTime;
+
+        if (time < _duration)
+        {
+            transform.position = Vector3.Lerp(_startPosition, _targetPosition, time / _duration);
+        }
         else
-            transform.position += 5 * transform.forward * Runner.DeltaTime;
-        //Time.deltaTimeだとクライアントの時間になってしまうが、Runnner.DeltaTimeを使用することでサーバー(photon)上のdeltaTimeで同期
+        {
+            transform.position = _targetPosition;
+            enabled = false;
+
+            if (_showHitEffect == true && _hitEffect != null)
+            {
+                if (_visualRoot != null)
+                {
+                    _visualRoot.SetActive(false);
+                }
+
+                _hitEffect.SetActive(true);
+                Destroy(gameObject, _lifeTimeAfterHit);
+            }
+            else
+            {
+                // No hit effect, destroy immediately
+                Destroy(gameObject);
+            }
+        }
     }
 }
