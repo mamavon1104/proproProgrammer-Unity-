@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CoinParent
   - Coin
+  - box
   layers:
   - Default
   - TransparentFX
