@@ -58,4 +58,37 @@ UniRXを使用、MV(R)PパターンとしてUI周りを設計しました、
 あとUI部分はCanvasGroupでまとめたので変更などもやり易くなりました。
 
 
------------------------------------??????????????----------------------------------------------------
+-----------------------------------カードゲーム----------------------------------------------------
+
+ソートの機能を実装するときに、自分のソートオプションEnumをUniRXでSubScribeして、
+
+sortOption.Subscribe(_ =>
+{
+    cardsTrans = GetSortAction();
+}
+List<Transform> GetSortAction()
+{
+    return _sortOption.Value switch
+    {
+        CardSortOption.Cost => _cardsHandlerList.OrderBy(card => card.CardData.cost).Select(kv => kv.transform).ToList(),
+
+        CardSortOption.HP => _cardsHandlerList.OrderBy(card => card.CardData.hp).Select(kv => kv.transform).ToList(),
+
+        CardSortOption.Count => _cardsHandlerList.OrderBy(card => card.CardData.cardsCount).Select(kv => kv.transform).ToList(),
+
+        _ => _cardsHandlerList.OrderBy(card => card.CardData.cost).Select(kv => kv.transform).ToList(),
+    };
+}
+
+と個人的に好みであるswitchの書き方 × LinQを使用したソート方法で分かりやすいコーディングができたかなと思っています、
+
+GridLayoutGroupで位置を設定しているため、1フレーム待たなきゃいけないなどのちょっと苦戦した部分がありましたが今回はすんなりと完成出来ました。
+
+
+-----------------------------------？？？？？？----------------------------------------------------
+
+
+-----------------------------------？？？？？？----------------------------------------------------
+
+
+-----------------------------------？？？？？？----------------------------------------------------
