@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9b3e8d71c8c25f4daf9802bbd7b6e9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 01775aadc5e3ba04db380b4db9f61ea4, type: 3}
   m_Name: DebugVectorObjs
   m_EditorClassIdentifier: 
-  vector3_A: {x: 3.1, y: 2.3445432, z: 10.67}
-  vector3_B: {x: 5, y: 2.345211, z: 3}
-  vector2_A: {x: 4, y: 4}
-  vector2_B: {x: 14, y: 0}
+  vector3_A: {x: 0, y: 0, z: 0}
+  vector3_B: {x: 0, y: 0, z: 0}
+  vector2_A: {x: 0, y: 0}
+  vector2_B: {x: 0, y: 0}

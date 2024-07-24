@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Mamavon
+namespace Mamavon.Funcs
 {
-    internal static class VectorClass
+    internal static class VectorExtensions
     {
         /// <summary>
         /// Vector3~Vector3‚ğs‚¢‚Ü‚·B 
