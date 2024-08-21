@@ -50,6 +50,16 @@ namespace Mamavon.Funcs
             Debug.Log($"{GetColorString(color)} {typeof(T).Name}: {value} </color>");
             return value;
         }
+        /// <summary>
+        /// Debug.Logを行います。
+        /// 引数strがある場合、クラス名などは表示せずstr + 値で返します
+        /// </summary>
+        public static T Debuglog<T>(this T value, string str, TextColor color = TextColor.White)
+        {
+            Debug.Log($"{str}{GetColorString(color)}{value}。 </color>");
+            return value;
+        }
+
 
         /// <summary>
         /// Debug.LogWarningを行います。
