@@ -13,6 +13,7 @@ Assets
 	│　 ├──WhackAMole
 	│　 ├──TurnBattle
 	│　 ├──CardGame
+	│　 ├──RTS
 	│　 │　　
 	│　 └──???
 	│
@@ -60,7 +61,7 @@ UniRXを使用、MV(R)PパターンとしてUI周りを設計しました、
 
 -----------------------------------CardGame----------------------------------------------------
 
-ソートの機能を実装するときに、自分のソートオプションEnumをUniRXでSubScribeして、
+ソートの機能を実装するときに、自分のEnum型ソートオプションをUniRXでSubScribeして、
 
 sortOption.Subscribe(_ =>
 {
@@ -85,8 +86,32 @@ List<Transform> GetSortAction()
 GridLayoutGroupで位置を設定しているため、1フレーム待たなきゃいけないなどのちょっと苦戦した部分がありましたが今回はすんなりと完成出来ました。
 
 
------------------------------------？？？？？？----------------------------------------------------
+-----------------------------------RTS-------------------------------------------------------
 
+リアルタイムストラテジー風にNaviMeshAgentsを使ってユニットを選択して動かすプログラムを組みました。
+
+選択方法は範囲選択、もしくは単一選択でユニットを選ぶことが出来ます。
+
+Start関数に初期化処理とマウスをクリックしたときの処理を纏めたので可読性が高いプログラムを組めたと自負しております。。
+
+private void Start()
+{
+    InitializeAgents();　//初期化処理
+    this.UpdateAsObservable().Subscribe(_ =>
+    {
+        if (!_isSelect)
+        {
+            if (Input.GetMouseButtonDown(0))
+                SelectCharacterStart(); //位置記録開始
+            else if (Input.GetMouseButtonUp(0))
+                SelectCharacterEnd();	//位置記録終了
+        }
+        else if (Input.GetMouseButtonDown(0))
+            SelectGroundPosition();	//移動先選択
+    });
+}
+
+また、選択した範囲が閾値以下の場合には単一選択をしているのだと見なしRayCastを飛ばし選択するのでユニット選択漏れが少ないプログラムが組めています。
 
 -----------------------------------？？？？？？----------------------------------------------------
 
