@@ -13,34 +13,8 @@ namespace Mamavon.Funcs
         Magenta,
         Cyan,
     }
-    internal static class DebugExtensions
+    public static class DebugExtensions
     {
-        /// <summary>
-        /// TextColorに合った色を返します。
-        /// </summary>
-        /// <param name="color">TextColor</param>
-        /// <returns>Color型の色を返す</returns>
-        public static Color ConvertEnumToColor(TextColor color)
-        {
-            string colorCode = ConvertEnumToColorCode(color);
-            if (ColorUtility.TryParseHtmlString(colorCode, out Color parsedColor))
-            {
-                return parsedColor.Debuglog();
-            }
-            return Color.white; // デフォルトの色として白を返す
-        }
-        /// <summary>
-        /// Enumの名前を小文字に変換して色として使用
-        /// </summary>
-        private static string ConvertEnumToColorCode(TextColor color)
-        {
-            return color.ToString().ToLower();
-        }
-        private static string GetColorString(TextColor color)
-        {
-            return color == TextColor.White ? "" : $"<color={ConvertEnumToColorCode(color)}>";
-        }
-
         /// <summary>
         /// Debug.Logを行います。
         /// 引数なしの場合はクラス名を表示しません。
@@ -79,6 +53,32 @@ namespace Mamavon.Funcs
         {
             Debug.LogError($"{GetColorString(color)} {typeof(T).Name}: {value} </color>");
             return value;
+        }
+
+        /// <summary>
+        /// TextColorに合った色を返します。
+        /// </summary>
+        /// <param name="color">TextColor</param>
+        /// <returns>Color型の色を返す</returns>
+        public static Color ConvertEnumToColor(TextColor color)
+        {
+            string colorCode = ConvertEnumToColorCode(color);
+            if (ColorUtility.TryParseHtmlString(colorCode, out Color parsedColor))
+            {
+                return parsedColor.Debuglog();
+            }
+            return Color.white; // デフォルトの色として白を返す
+        }
+        /// <summary>
+        /// Enumの名前を小文字に変換して色として使用
+        /// </summary>
+        private static string ConvertEnumToColorCode(TextColor color)
+        {
+            return color.ToString().ToLower();
+        }
+        private static string GetColorString(TextColor color)
+        {
+            return color == TextColor.White ? "" : $"<color={ConvertEnumToColorCode(color)}>";
         }
     }
 }
