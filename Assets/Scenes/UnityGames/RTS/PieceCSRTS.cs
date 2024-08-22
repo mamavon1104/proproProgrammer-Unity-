@@ -83,22 +83,25 @@ public class PieceCSRTS : MonoBehaviour
         s_z = Mathf.Min(_startPos.z, _endPos.z);
         e_z = Mathf.Max(_startPos.z, _endPos.z);
 
-
-        foreach (var agent in _selectedAgentsDic.Keys)
+        if (Mathf.Abs(e_x - s_x) <= 0.5f && Mathf.Abs(e_x - s_x) <= 0.5f)
         {
-            var posi = agent.transform.position;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            (s_x <= posi.x).Debuglog("Å‰‚ÌŒ‹‰Êx");
-            (e_x >= posi.x).Debuglog("“ñ‰ñ–Ú‚ÌŒ‹‰Êx");
-            (s_z <= posi.z).Debuglog("Å‰‚ÌŒ‹‰Êz");
-            (e_z >= posi.z).Debuglog("“ñ‰ñ–Ú‚ÌŒ‹‰Êz");
-
-            if ((posi.x >= s_x && posi.x <= e_x) && (s_z <= posi.z && e_z >= posi.z))
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity).Debuglog("raycast"))
+                if (hit.transform.TryGetComponent<NavMeshAgent>(out var agent).Debuglog("try getcompnent navmeshagents"))
+                    agentsArray.Add(agent);
+        }
+        else
+        {
+            foreach (var agent in _selectedAgentsDic.Keys)
             {
-                agentsArray.Add(agent);
+                var posi = agent.transform.position;
+                if ((posi.x >= s_x && posi.x <= e_x) && (s_z <= posi.z && e_z >= posi.z))
+                    agentsArray.Add(agent);
             }
         }
-        return agentsArray.Count > 0;
+
+        return agentsArray.Count > 0; //‚±‚Ì‚Ü‚Ü•Ô‚·‚Ì”ü‚µ‚¢
     }
 
     void GetMousePosition(out Vector3 pos)

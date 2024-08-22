@@ -56,7 +56,7 @@ namespace Mamavon.Funcs
         /// </summary>
         public static T Debuglog<T>(this T value, string str, TextColor color = TextColor.White)
         {
-            Debug.Log($"{str}{GetColorString(color)}{value}ÅB </color>");
+            Debug.Log($"{str} : {GetColorString(color)}{value}ÅB </color>");
             return value;
         }
 
