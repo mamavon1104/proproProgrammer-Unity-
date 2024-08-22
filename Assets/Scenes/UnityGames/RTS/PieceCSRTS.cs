@@ -12,27 +12,24 @@ public class PieceCSRTS : MonoBehaviour
     [SerializeField] private bool _isSelect;
     private Dictionary<NavMeshAgent, ReactiveProperty<bool>> _selectedAgentsDic = new Dictionary<NavMeshAgent, ReactiveProperty<bool>>();
 
-    public Vector3 _startPos;
-    public Vector3 _endPos;
-    public float s_x;//始点x座標
-    public float s_z;//始点z座標
-    public float e_x;//終点x座標
-    public float e_z;//終点z座標
+    [SerializeField] Vector3 _startPos, _endPos;
+    [SerializeField] float start_x, start_z;    //始点x,z座標
+    [SerializeField] float end_x, end_z;        //終点x,z座標
 
     private void Start()
     {
-        InitializeAgents();
+        InitializeAgents(); //初期化処理
         this.UpdateAsObservable().Subscribe(_ =>
         {
             if (!_isSelect)
             {
                 if (Input.GetMouseButtonDown(0))
-                    SelectCharacterStart();
+                    SelectCharacterStart(); //位置記録開始
                 else if (Input.GetMouseButtonUp(0))
-                    SelectCharacterEnd();
+                    SelectCharacterEnd();   //位置記録終了
             }
             else if (Input.GetMouseButtonDown(0))
-                SelectGroundPosition();
+                SelectGroundPosition(); //移動先選択
         });
     }
 
@@ -78,12 +75,13 @@ public class PieceCSRTS : MonoBehaviour
     {
         agentsArray = new List<NavMeshAgent>();
 
-        s_x = Mathf.Min(_startPos.x, _endPos.x);
-        e_x = Mathf.Max(_startPos.x, _endPos.x);
-        s_z = Mathf.Min(_startPos.z, _endPos.z);
-        e_z = Mathf.Max(_startPos.z, _endPos.z);
+        start_x = Mathf.Min(_startPos.x, _endPos.x);
+        end_x = Mathf.Max(_startPos.x, _endPos.x);
+        start_z = Mathf.Min(_startPos.z, _endPos.z);
+        end_z = Mathf.Max(_startPos.z, _endPos.z);
 
-        if (Mathf.Abs(e_x - s_x) <= 0.5f && Mathf.Abs(e_x - s_x) <= 0.5f)
+        //選択している範囲が狭かったらraycast
+        if (Mathf.Abs(end_x - start_x) <= 0.5f && Mathf.Abs(end_x - start_x) <= 0.5f)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -91,17 +89,16 @@ public class PieceCSRTS : MonoBehaviour
                 if (hit.transform.TryGetComponent<NavMeshAgent>(out var agent).Debuglog("try getcompnent navmeshagents"))
                     agentsArray.Add(agent);
         }
-        else
+        else //選択している範囲が閾値を超えている場合オブジェクトの位置で範囲選択を行う
         {
             foreach (var agent in _selectedAgentsDic.Keys)
             {
                 var posi = agent.transform.position;
-                if ((posi.x >= s_x && posi.x <= e_x) && (s_z <= posi.z && e_z >= posi.z))
+                if ((posi.x >= start_x && posi.x <= end_x) && (start_z <= posi.z && end_z >= posi.z))
                     agentsArray.Add(agent);
             }
         }
-
-        return agentsArray.Count > 0; //このまま返すの美しい
+        return agentsArray.Count > 0; //条件式で返すの美しい
     }
 
     void GetMousePosition(out Vector3 pos)
