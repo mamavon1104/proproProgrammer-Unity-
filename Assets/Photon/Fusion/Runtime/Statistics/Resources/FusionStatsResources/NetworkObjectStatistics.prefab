@@ -1506,8 +1506,7 @@ MonoBehaviour:
   _rect: {fileID: 7935946544523926550}
   _combinedGraphRender: {fileID: 7935946544172031221}
   _toggleButton: {fileID: 5025754270617725529}
-  _statsGraphPrefab: {fileID: 1719597503058426706, guid: 302a42a4eb4d5e540b803b1f86597505,
-    type: 3}
+  _statsGraphPrefab: {fileID: 1719597503058426706, guid: 302a42a4eb4d5e540b803b1f86597505, type: 3}
 --- !u!1 &7935946544552512574
 GameObject:
   m_ObjectHideFlags: 0

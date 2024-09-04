@@ -225,5 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7809d1c803d32a34988d92e4362ee784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardData: {fileID: 0}
   myText: {fileID: 7156733951888728075}
+  cardData: {fileID: 0}
+  myCardSlot: {fileID: 0}
