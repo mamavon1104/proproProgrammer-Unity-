@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170b6beb1a577f54194d3ef6f37b3b14, type: 3}
   m_Name: NewScriptableObject_2
   m_EditorClassIdentifier: 
+  _hp: -53100
+  _attack: 0
+  _diffence: 0
+  _attackSpan: 0
+  _movementSpeed:
+    value: 0
+  _attackDistance:
+    value: 1.7
+  type: 1

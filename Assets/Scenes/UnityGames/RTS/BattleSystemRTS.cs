@@ -3,12 +3,12 @@ using Mamavon.Funcs;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class BattleSystemRTS : MonoBehaviour
 {
     [SerializeField] EntityData _entityData;
     [SerializeField] SphereCollider _attackCol;
+    [SerializeField] BattleSystemRTS _enemy = default;
     private void Start()
     {
         if (_entityData == null)
@@ -17,30 +17,35 @@ public class BattleSystemRTS : MonoBehaviour
         if (_attackCol == null)
             SetChildCollider();
 
-        TryGetComponent<NavMeshAgent>(out var nav);
-        _entityData._movementSpeed.Subscribe(speed =>
+        _attackCol.OnTriggerEnterAsObservable().Subscribe(obj =>
         {
-            nav.speed = speed;
-        });
-        _entityData._attackDistance.Subscribe(distance =>
-        {
-            _attackCol.radius = distance;
-        });
-
-        _attackCol.OnCollisionEnterAsObservable().Subscribe(async obj =>
-        {
-            if (!obj.transform.TryGetComponent<BattleSystemRTS>(out var enemy))
+            "debug".Debuglog();
+            if (!obj.transform.TryGetComponent<BattleSystemRTS>(out var colliderEnemy))
                 return;
 
-            if (enemy._entityData.entity == _entityData.entity)
+            if (colliderEnemy._entityData.type == _entityData.type)
                 return;
 
-            await UniTask.WaitForSeconds(_entityData._attackSpan);
+            _enemy = colliderEnemy;
         });
-        _attackCol.OnCollisionExitAsObservable().Subscribe(_ =>
+        _attackCol.OnTriggerExitAsObservable().Subscribe(obj =>
         {
+            if (!obj.transform.TryGetComponent<BattleSystemRTS>(out var colliderEnemy))
+                return;
 
+            if (colliderEnemy != _enemy)
+                return;
+
+            _enemy = null;
         });
+
+        this.UpdateAsObservable().Where(_ => _enemy != null)
+            .Subscribe(async _ =>
+            {
+                //    await UniTask.WaitForSeconds(_entityData._attackSpan);
+
+                (_enemy._entityData._hp -= 10).Debuglog();
+            });
     }
 
     public void SetChildCollider()

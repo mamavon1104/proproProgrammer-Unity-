@@ -12,6 +12,7 @@ public class PieceCSRTS : MonoBehaviour
     [SerializeField] private bool _isSelect;
     private Dictionary<NavMeshAgent, ReactiveProperty<bool>> _selectedAgentsDic = new Dictionary<NavMeshAgent, ReactiveProperty<bool>>();
 
+    [SerializeField] LayerMask ignoreLayers;
     [SerializeField] Vector3 _startPos, _endPos;
     [SerializeField] float start_x, start_z;    //始点x,z座標
     [SerializeField] float end_x, end_z;        //終点x,z座標
@@ -85,7 +86,7 @@ public class PieceCSRTS : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity).Debuglog("raycast"))
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, ~ignoreLayers).Debuglog("raycast", TextColor.Red))
                 if (hit.transform.TryGetComponent<NavMeshAgent>(out var agent).Debuglog("try getcompnent navmeshagents"))
                     agentsArray.Add(agent);
         }

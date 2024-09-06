@@ -103,7 +103,7 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 3
     agentTypeID: 0
-    agentRadius: 1.3
+    agentRadius: 0.5
     agentHeight: 0.95
     agentSlope: 45
     agentClimb: 0.4
@@ -111,7 +111,7 @@ NavMeshSettings:
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.4333333
+    cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
     buildHeightMesh: 0
@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 6689041}
   - component: {fileID: 6689040}
   - component: {fileID: 6689039}
+  - component: {fileID: 6689045}
   m_Layer: 0
   m_Name: Pieces (1)
   m_TagString: Untagged
@@ -155,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 2ea80d9cb23dee54a8588c582aa02cd7, type: 2}
   _attackCol: {fileID: 941946091}
+  _enemy: {fileID: 0}
 --- !u!195 &6689040
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -164,7 +166,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6689038}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.3
+  m_Radius: 0.58
   m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
@@ -264,6 +266,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &6689045
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6689038}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &118393060
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,7 +323,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 118393060}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.3
+  m_Radius: 0.58
   m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
@@ -408,6 +437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 8def86edf1dddd849be2a39112a113c8, type: 2}
   _attackCol: {fileID: 688648343}
+  _enemy: {fileID: 0}
 --- !u!1 &145291931
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 290541001}
   - component: {fileID: 290541000}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackCollider (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,11 +575,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.4
+  m_Radius: 1.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &290541001
 Transform:
@@ -558,8 +588,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290540999}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.380001, y: -0.09899998, z: 3.2300005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -718,6 +748,9 @@ MonoBehaviour:
   - {fileID: 118393061}
   - {fileID: 1140050740}
   _isSelect: 0
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 8
   _startPos: {x: 0, y: 0, z: 0}
   _endPos: {x: 0, y: 0, z: 0}
   start_x: 0
@@ -796,7 +829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 688648344}
   - component: {fileID: 688648343}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackCollider (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -818,11 +851,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.4
+  m_Radius: 1.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &688648344
 Transform:
@@ -831,8 +864,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688648342}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.380001, y: -0.09899998, z: 5.4800005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -986,7 +1019,7 @@ GameObject:
   m_Component:
   - component: {fileID: 901887849}
   - component: {fileID: 901887848}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackCollider (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,11 +1041,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.4
+  m_Radius: 1.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &901887849
 Transform:
@@ -1021,8 +1054,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901887847}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.8600006, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1039,7 +1072,7 @@ GameObject:
   m_Component:
   - component: {fileID: 941946092}
   - component: {fileID: 941946091}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AttackCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1061,11 +1094,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.4
+  m_Radius: 1.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &941946092
 Transform:
@@ -1112,7 +1145,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1140050739}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.3
+  m_Radius: 0.58
   m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1226,6 +1259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 8def86edf1dddd849be2a39112a113c8, type: 2}
   _attackCol: {fileID: 901887848}
+  _enemy: {fileID: 0}
 --- !u!1 &1148201979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,7 +1290,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1148201979}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.3
+  m_Radius: 0.58
   m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1370,3 +1404,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 8def86edf1dddd849be2a39112a113c8, type: 2}
   _attackCol: {fileID: 290541000}
+  _enemy: {fileID: 0}
