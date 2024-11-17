@@ -152,13 +152,10 @@ public class PieceCSRTS : MonoBehaviour
     private bool TryGetClickPosition(out Vector3 position)
     {
         position = Vector3.zero;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 100))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 100, ~ignoreLayers, QueryTriggerInteraction.Ignore))
         {
-            if (!hit.transform.TryGetComponent<NavMeshAgent>(out _)) //navmeshÇ™ïtÇ¢ÇƒÇ»Ç©Ç¡ÇΩÇÁínñ Ç∆å©Ç»ÇµêNçUÅB
-            {
-                position = hit.point;
-                return true;
-            }
+            position = hit.point;
+            return true;
         }
         return false;
     }

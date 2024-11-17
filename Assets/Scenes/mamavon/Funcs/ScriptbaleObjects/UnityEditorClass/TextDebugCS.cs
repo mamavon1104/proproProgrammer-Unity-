@@ -1,8 +1,12 @@
 using UnityEngine;
+using Mamavon.Funcs;
+using System;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-namespace Mamavon.Funcs.Scriptables
+
+namespace Mamavon.Data
 {
     /// <summary>
     /// パッケージ選択用の ScriptableObjectだよ。
@@ -18,10 +22,20 @@ namespace Mamavon.Funcs.Scriptables
             //値が返ってくるので配列に値を追加しながらもちゃんとDebug出来ますよ。
             var a = text.Debuglog(textColor);
         }
+
+        [ContextMenu("全ての色でDebugLog")]
+        private void DebugAllColor()
+        {
+            TextColor[] colors = (TextColor[])Enum.GetValues(typeof(TextColor));
+            foreach (var color in colors)
+            {
+                text.Debuglog($"Color = {color}", color);
+            }
+        }
     }
 #if UNITY_EDITOR
     [CustomEditor(typeof(TextDebugCS))] //typeofってrequireComponentと同じ感じで使えるみたいね
-    public class TextDebugEditor : Editor
+    public class TextDebugEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
